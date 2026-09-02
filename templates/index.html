@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>People Counter</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🚪</text></svg>">
+</head>
+<body>
+<header class="topbar">
+  <h1>People Counter</h1>
+  <p class="tagline">Count who walks in and who walks out of a room, from a video clip.</p>
+</header>
+
+<main>
+  <!-- Step 1 --------------------------------------------------------- -->
+  <section class="card" id="step-upload">
+    <h2><span class="step">1</span> Upload a clip</h2>
+    <form id="upload-form">
+      <label class="dropzone" id="dropzone" for="file-input">
+        <input type="file" id="file-input" name="video" accept="video/*" hidden>
+        <svg viewBox="0 0 24 24" class="drop-icon" aria-hidden="true">
+          <path d="M12 16V4m0 0L8 8m4-4 4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+        </svg>
+        <span class="drop-title">Drop a video here, or click to choose</span>
+        <span class="drop-hint">mp4, mov, avi, mkv, webm &middot; up to {{ max_upload_mb }} MB</span>
+      </label>
+    </form>
+    <div id="upload-progress" class="bar hidden"><div class="bar-fill"></div><span class="bar-label"></span></div>
+    <p class="error hidden" id="upload-error"></p>
+  </section>
+
+  <!-- Step 2 --------------------------------------------------------- -->
+  <section class="card hidden" id="step-line">
+    <h2><span class="step">2</span> Place the counting line</h2>
+    <p class="help">
+      Drag either endpoint across the doorway. The green arrow shows which way
+      counts as <strong>in</strong> &mdash; use <em>Flip direction</em> if it points the wrong way.
+    </p>
+    <div class="stage">
+      <img id="preview" alt="First frame of the uploaded video">
+      <svg id="overlay" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <line id="line-shadow" class="line-shadow"/>
+        <line id="line-main" class="line-main"/>
+        <g id="arrow"><line id="arrow-stem"/><polygon id="arrow-head"/></g>
+        <circle id="handle-a" class="handle" r="9"/>
+        <circle id="handle-b" class="handle" r="9"/>
+      </svg>
+    </div>
+    <div class="row">
+      <button type="button" class="ghost" id="btn-flip">Flip direction</button>
+      <button type="button" class="ghost" id="btn-horizontal">Reset to horizontal</button>
+      <button type="button" class="ghost" id="btn-vertical">Vertical line</button>
+      <span class="meta" id="video-meta"></span>
+    </div>
+  </section>
+
+  <!-- Step 3 --------------------------------------------------------- -->
+  <section class="card hidden" id="step-settings">
+    <h2><span class="step">3</span> Settings &amp; run</h2>
+    <details class="advanced">
+      <summary>Advanced settings</summary>
+      <div class="grid">
+        <label>Detector
+          <select id="opt-detector">
+            <option value="auto">Auto (YOLO if installed)</option>
+            <option value="yolo">YOLO</option>
+            <option value="hog">HOG (no model download)</option>
+          </select>
+          <small>YOLO is far more accurate; HOG needs no weights.</small>
+        </label>
+        <label>Confidence <output id="out-confidence">0.35</output>
+          <input type="range" id="opt-confidence" min="0.05" max="0.9" step="0.05" value="0.35">
+          <small>Lower finds more people and more false positives.</small>
+        </label>
+        <label>Frame stride <output id="out-stride">1</output>
+          <input type="range" id="opt-stride" min="1" max="6" step="1" value="1">
+          <small>Process every Nth frame — faster, but fast walkers can be missed.</small>
+        </label>
+        <label>Min hits before counting <output id="out-minhits">3</output>
+          <input type="range" id="opt-minhits" min="1" max="10" step="1" value="3">
+          <small>Higher ignores flickering detections near the line.</small>
+        </label>
+        <label>Track memory (frames) <output id="out-maxage">30</output>
+          <input type="range" id="opt-maxage" min="5" max="90" step="5" value="30">
+          <small>How long a person keeps their identity while hidden.</small>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="opt-video" checked> Produce an annotated video
+        </label>
+      </div>
+    </details>
+    <div class="row">
+      <button type="button" class="primary" id="btn-run">Count people</button>
+      <button type="button" class="ghost hidden" id="btn-cancel">Cancel</button>
+    </div>
+    <div id="job-progress" class="bar hidden"><div class="bar-fill"></div><span class="bar-label"></span></div>
+    <p class="error hidden" id="job-error"></p>
+  </section>
+
+  <!-- Step 4 --------------------------------------------------------- -->
+  <section class="card hidden" id="step-results">
+    <h2><span class="step">4</span> Results</h2>
+    <div class="counts">
+      <div class="count in"><span class="n" id="count-in">0</span><span class="k">entered</span></div>
+      <div class="count out"><span class="n" id="count-out">0</span><span class="k">exited</span></div>
+      <div class="count net"><span class="n" id="count-net">0</span><span class="k">net inside</span></div>
+    </div>
+    <p class="meta" id="result-meta"></p>
+    <video id="result-video" class="hidden" controls playsinline></video>
+    <h3 class="events-title hidden" id="events-title">Crossings</h3>
+    <ol class="events hidden" id="events"></ol>
+    <div class="row">
+      <a class="ghost" id="btn-json" download>Download JSON</a>
+      <a class="ghost hidden" id="btn-mp4" download>Download annotated video</a>
+      <button type="button" class="ghost" id="btn-again">Count another clip</button>
+    </div>
+  </section>
+</main>
+
+<footer>People Counter v{{ version }} &middot; runs entirely on this machine</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

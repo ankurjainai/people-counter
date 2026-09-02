@@ -1,0 +1,99 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --ink: #16181d;
+  --muted: #666c78;
+  --line: #dfe2e8;
+  --accent: #2f6df6;
+  --in: #17a34a;
+  --out: #e0433b;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(16,18,24,.06), 0 6px 20px rgba(16,18,24,.07);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101216; --panel: #181b21; --ink: #e9ebef; --muted: #9aa2b1;
+    --line: #262b34; --accent: #6f9bff;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 8px 26px rgba(0,0,0,.45);
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.topbar { padding: 34px 24px 8px; text-align: center; }
+.topbar h1 { margin: 0; font-size: 26px; letter-spacing: -.02em; }
+.tagline { margin: 6px 0 0; color: var(--muted); }
+main { max-width: 880px; margin: 0 auto; padding: 20px 20px 60px; display: grid; gap: 18px; }
+footer { text-align: center; color: var(--muted); font-size: 13px; padding-bottom: 34px; }
+
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px 22px; }
+.card h2 { margin: 0 0 14px; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+.card h3 { font-size: 14px; margin: 20px 0 8px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.step { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; }
+.help { margin: -4px 0 14px; color: var(--muted); font-size: 14px; }
+.hidden { display: none !important; }
+
+/* upload -------------------------------------------------------------- */
+.dropzone {
+  display: grid; place-items: center; gap: 6px; padding: 40px 20px; cursor: pointer;
+  border: 2px dashed var(--line); border-radius: var(--radius); text-align: center;
+  transition: border-color .15s, background .15s;
+}
+.dropzone:hover, .dropzone.dragover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.drop-icon { width: 34px; height: 34px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.drop-title { font-weight: 600; }
+.drop-hint, small { color: var(--muted); font-size: 12.5px; }
+
+/* line editor --------------------------------------------------------- */
+.stage { position: relative; line-height: 0; border-radius: 10px; overflow: hidden; background: #000; }
+.stage img { width: 100%; height: auto; display: block; }
+#overlay { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+.line-shadow { stroke: rgba(0,0,0,.55); stroke-width: 7; }
+.line-main { stroke: #ffd54a; stroke-width: 3; }
+#arrow-stem { stroke: #21d16a; stroke-width: 3; }
+#arrow-head { fill: #21d16a; }
+.handle { fill: #fff; stroke: var(--accent); stroke-width: 3; cursor: grab; }
+.handle:active { cursor: grabbing; }
+
+/* controls ------------------------------------------------------------ */
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+button, .ghost { font: inherit; border-radius: 8px; padding: 9px 15px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); text-decoration: none; }
+button:hover, a.ghost:hover { border-color: var(--accent); color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+button.primary:hover { filter: brightness(1.08); color: #fff; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.meta { color: var(--muted); font-size: 13px; margin-left: auto; }
+
+.advanced summary { cursor: pointer; color: var(--accent); font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 14px; }
+.grid label { display: grid; gap: 4px; font-size: 13.5px; font-weight: 600; }
+.grid label.check { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.grid small { font-weight: 400; }
+select, input[type="range"] { width: 100%; }
+select { padding: 7px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+output { float: right; font-weight: 400; color: var(--muted); }
+
+/* progress ------------------------------------------------------------ */
+.bar { position: relative; height: 26px; margin-top: 14px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 8%, transparent); overflow: hidden; }
+.bar-fill { height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+.bar-label { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12.5px; font-weight: 600; }
+.error { color: var(--out); font-size: 14px; margin: 12px 0 0; }
+
+/* results ------------------------------------------------------------- */
+.counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.count { border: 1px solid var(--line); border-radius: 10px; padding: 16px; text-align: center; display: grid; gap: 2px; }
+.count .n { font-size: 34px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.count .k { color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em; }
+.count.in .n { color: var(--in); }
+.count.out .n { color: var(--out); }
+#result-video { width: 100%; margin-top: 16px; border-radius: 10px; background: #000; }
+.events { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; }
+.events li { display: flex; gap: 12px; align-items: center; padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.events li:last-child { border-bottom: none; }
+.tag { font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 2px 8px; border-radius: 999px; color: #fff; }
+.tag.in { background: var(--in); }
+.tag.out { background: var(--out); }
+.events .t { font-variant-numeric: tabular-nums; color: var(--muted); }

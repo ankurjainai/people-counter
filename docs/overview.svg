@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" width="900" height="200" role="img" aria-label="Pipeline: a clip with a counting line goes through detect, track and count, producing entry and exit totals" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8a93a3"/>
+    </marker>
+  </defs>
+  <style>
+    .box   { fill: none; stroke: #8a93a3; stroke-width: 1.5; }
+    .step  { fill: #8a93a3; font-size: 14px; font-weight: 600; }
+    .sub   { fill: #8a93a3; font-size: 11px; opacity: .8; }
+    .arrow { stroke: #8a93a3; stroke-width: 1.5; fill: none; marker-end: url(#head); }
+    .enter { fill: #17a34a; }
+    .exit  { fill: #e0433b; }
+  </style>
+
+  <!-- the clip: two people crossing a counting line -->
+  <rect x="14" y="40" width="170" height="120" rx="10" class="box"/>
+  <text x="14" y="30" class="step">the clip</text>
+  <line x1="28" y1="102" x2="170" y2="102" stroke="#d8a800" stroke-width="2.5"/>
+  <circle cx="72" cy="136" r="8" fill="#6f9bff"/>
+  <path d="M72 122 L72 78" class="arrow"/>
+  <circle cx="128" cy="66" r="8" fill="#6f9bff"/>
+  <path d="M128 80 L128 124" class="arrow"/>
+  <text x="28" y="152" class="sub">one line across the doorway</text>
+
+  <!-- pipeline -->
+  <path d="M188 100 L216 100" class="arrow"/>
+  <rect x="222" y="74" width="112" height="52" rx="10" class="box"/>
+  <text x="252" y="97" class="step">detect</text>
+  <text x="235" y="114" class="sub">people per frame</text>
+
+  <path d="M338 100 L366 100" class="arrow"/>
+  <rect x="372" y="74" width="112" height="52" rx="10" class="box"/>
+  <text x="409" y="97" class="step">track</text>
+  <text x="385" y="114" class="sub">keep identities</text>
+
+  <path d="M488 100 L516 100" class="arrow"/>
+  <rect x="522" y="74" width="122" height="52" rx="10" class="box"/>
+  <text x="562" y="97" class="step">count</text>
+  <text x="535" y="114" class="sub">crossing direction</text>
+
+  <!-- results -->
+  <path d="M648 100 L676 100" class="arrow"/>
+  <rect x="682" y="40" width="204" height="120" rx="10" class="box"/>
+  <text x="682" y="30" class="step">the answer</text>
+  <text x="702" y="86" class="enter" font-size="28" font-weight="700">3</text>
+  <text x="730" y="86" class="sub" font-size="13">entered</text>
+  <text x="702" y="120" class="exit" font-size="28" font-weight="700">2</text>
+  <text x="730" y="120" class="sub" font-size="13">exited</text>
+  <text x="702" y="146" class="sub">net +1 · annotated video · JSON</text>
+</svg>

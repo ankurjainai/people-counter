@@ -1,0 +1,11 @@
+# Core video + numerics
+opencv-python-headless>=4.8
+numpy>=1.24,<2.3
+
+# Web front-end
+flask>=3.0
+
+# Optional but strongly recommended: YOLO person detector.
+# Without it the pipeline falls back to OpenCV's built-in HOG detector,
+# which is noticeably less accurate.
+ultralytics>=8.3

@@ -1,0 +1,10 @@
+{
+  "video": "samples/sample_doorway.mp4",
+  "expected_entered": 3,
+  "expected_exited": 2,
+  "width": 960,
+  "height": 540,
+  "fps": 25,
+  "frames": 450,
+  "lead_in_seconds": 2.0
+}
