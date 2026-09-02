@@ -1,7 +1,16 @@
+# Virtualenv
 .venv/
+
+# Python bytecode
 __pycache__/
 *.pyc
+
+# Downloaded model weights (fetched on first run)
+*.pt
+
+# Runtime data from the web app
 uploads/
 outputs/
-jobs/
-*.pt
+
+# macOS
+.DS_Store
