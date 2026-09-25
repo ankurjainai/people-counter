@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 OUTPUT_DIR = BASE_DIR / "outputs"
 ALLOWED_EXT = {".mp4", ".mov", ".avi", ".mkv", ".m4v", ".webm", ".mpg", ".mpeg"}
-MAX_UPLOAD_MB = int(os.environ.get("PC_MAX_UPLOAD_MB", "512"))
+MAX_UPLOAD_MB = int(os.environ.get("PC_MAX_UPLOAD_MB", "1024"))
 
 log = logging.getLogger(__name__)
 

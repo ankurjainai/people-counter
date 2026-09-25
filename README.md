@@ -52,8 +52,8 @@ Open <http://127.0.0.1:5000> and:
 4. **Read the results** — totals, a timestamped list of crossings, the annotated
    video inline, and JSON/MP4 downloads.
 
-Options: `--host`, `--port`, `--debug`. The upload cap defaults to 512 MB; change
-it with `PC_MAX_UPLOAD_MB=1024`.
+Options: `--host`, `--port`, `--debug`. The upload cap defaults to 1024 MB (1 GB);
+change it with `PC_MAX_UPLOAD_MB=2048`.
 
 ## Command line
 
